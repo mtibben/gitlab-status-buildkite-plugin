@@ -7,7 +7,7 @@ set -euo pipefail
 . "$DIR/../lib/curl.bash"
 
 
-if [ "${BUILDKITE_PROJECT_PROVIDER}" != 'gitlab' ]; then
+if [ "${BUILDKITE_PIPELINE_PROVIDER}" != 'gitlab' ] && [ "${BUILDKITE_PIPELINE_PROVIDER}" != 'gitlab_ee' ]; then
   echo '+++ Provider is not gitlab, can not do anything'
   exit 1
 fi
