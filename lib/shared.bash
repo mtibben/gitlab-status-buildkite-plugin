@@ -20,7 +20,7 @@ fi
 
 buildkite_job_name() {
   echo -n "${BUILDKITE_LABEL:-${BUILDKITE_STEP_KEY:-}}"
-  if [ -n "${BUILDKITE_PARALLEL_JOB:-}" ]; then
+  if [[ -n "${BUILDKITE_PARALLEL_JOB:-}" && -n "${BUILDKITE_PARALLEL_JOB_COUNT:-}" ]]; then
     echo -n " (${BUILDKITE_PARALLEL_JOB:-}/${BUILDKITE_PARALLEL_JOB_COUNT:-})"
   fi
   echo
