@@ -18,7 +18,15 @@ if [ -z "${!GITLAB_TOKEN_ENV_VAR:-}" ]; then
   exit 1
 fi
 
-STATUS_NAME=$(plugin_read_config CHECK_NAME "${BUILDKITE_STEP_KEY:-}$([[ -n "${BUILDKITE_PARALLEL_JOB:-}" ]] && echo "_${BUILDKITE_PARALLEL_JOB:-}")")
+buildkite_job_name() {
+  echo -n "${BUILDKITE_LABEL:-${BUILDKITE_STEP_KEY:-}}"
+  if [ -n "${BUILDKITE_PARALLEL_JOB:-}" ]; then
+    echo -n " (${BUILDKITE_PARALLEL_JOB:-}/${BUILDKITE_PARALLEL_JOB_COUNT:-})"
+  fi
+  echo
+}
+
+STATUS_NAME=$(plugin_read_config CHECK_NAME "$(buildkite_job_name)")
 
 if [ -z "${STATUS_NAME}" ]; then
   echo "+++ ERROR: if the step has no key, check-name must be provided"
