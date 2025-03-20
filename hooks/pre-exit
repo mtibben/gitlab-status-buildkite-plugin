@@ -14,4 +14,4 @@ else
   status="failed"
 fi
 
-set_status "${status}"
+set_gitlab_state "${status}"

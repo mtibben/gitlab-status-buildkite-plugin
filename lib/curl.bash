@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-set_status() {
+set_gitlab_state() {
   CURL_ARGS=(
     --request POST
     --silent

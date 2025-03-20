@@ -6,4 +6,4 @@ DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 # shellcheck source=lib/shared.bash
 . "$DIR/../lib/shared.bash"
 
-set_status "running"
+set_gitlab_state "running"
