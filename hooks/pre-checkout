@@ -6,4 +6,20 @@ DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 # shellcheck source=lib/shared.bash
 . "$DIR/../lib/shared.bash"
 
+bk_build_json() {
+  curl -H "Authorization: Bearer $BUILDKITE_API_TOKEN" \
+     "https://api.buildkite.com/v2/organizations/$BUILDKITE_ORG_NAME/pipelines/$BUILDKITE_PIPELINE_SLUG/builds/$BUILDKITE_BUILD_NUMBER"
+}
+
+bk_scheduled_jobs_name_url() {
+  bk_build_json | jq -r '.jobs[] | select(.state == "scheduled") | "\(.name)\t\(.web_url)"'
+}
+
+echo "-- setting gitlab commit status"
+
 set_gitlab_state "running"
+
+# set any scheduled jobs to pending in gitlab
+while IFS=$'\t' read -r name url; do
+  set_gitlab_state "pending" "$name" "$url"
+done < <(bk_scheduled_jobs_name_url)

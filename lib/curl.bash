@@ -10,11 +10,13 @@ set_gitlab_state() {
   )
 
   local status=$1
+  local name=${2:-${STATUS_NAME}}
+  local target_url=${3:-${BUILDKITE_BUILD_URL}#${BUILDKITE_JOB_ID:-}}
 
   VARS=(
     "state=${status}"
-    "target_url=${BUILDKITE_BUILD_URL}#${BUILDKITE_JOB_ID:-}"
-    "name=${STATUS_NAME}"
+    "name=${name}"
+    "target_url=${target_url}"
   )
 
   for i in "${VARS[@]}"; do
